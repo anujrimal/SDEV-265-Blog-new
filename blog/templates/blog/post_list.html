@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/post_list.css' %}">
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>Profile</h2>
+            <p>This is Red Team's Blog Page</p>
+        </div>
+        <div class="content">
+            {% for post in posts %}
+                <div class="post">
+                    <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                    <p>{{ post.text }}</p>
+                    <time>published: {{post.published_date}}</time>
+                    <p>By <a href="{% url 'author_detail' author_id=post.author.pk %}">{{ post.author }}</a></p>
+                    <div class="votes">
+                        <span>Upvotes: {{ post.upvotes.count }}</span>
+                        <span>Downvotes: {{ post.downvotes.count }}</span>
+                    </div>
+                    <div class="vote-buttons">
+                        <a href="{% url 'upvote_post' post.id %}" class="btn upvote-btn">Upvote</a>
+                        <a href="{% url 'downvote_post' post.id %}" class="btn downvote-btn">Downvote</a>
+                    </div>
+                    <div class="post-actions">
+                        <a href="{% url 'post_edit' pk=post.pk %}" class="btn edit-btn">Edit</a>
+                        <a href="{% url 'post_delete' pk=post.pk %}" class="btn delete-btn">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
